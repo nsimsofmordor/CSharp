@@ -7,7 +7,7 @@ namespace SnakesAndLaddersGame
         static void Main(string[] args)
         {
 
-            bool play, stopgame;
+            bool play, stopgame; //game control
 
             play = Play();
 
