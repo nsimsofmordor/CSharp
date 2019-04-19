@@ -1,5 +1,10 @@
 ﻿using System;
 
+// TODO:
+// 1. implement snakes and ladders
+// 2. Fix the random rolls being the same for each player
+// 3. Fix pos 2 adding with its rolls incorrectly
+
 namespace SnakesAndLaddersGame
 {
     class Game
@@ -11,26 +16,37 @@ namespace SnakesAndLaddersGame
 
             play = Play();
 
+
+            Random rnd = new Random();
+
+
+
             // Game starts //
             while (play)
             {
-
-                int p1_pos = 1, p2_pos = 1, p1_roll = 0, p2_roll = 0;
+                
+                int p1_pos = 1, p2_pos = 1, p1_roll = 0, p2_roll = 0; // reset variables
 
                 Console.WriteLine("Game in progress");
                 Instructions();
 
-                while (p1_pos != 100 && p2_pos != 100)
+                while (p1_pos != 25 && p2_pos != 25)
                 {
+
                     // Player 1 Turn
-                    Console.WriteLine("-------Player 1's turn-------");
-                    p1_roll = Roll();
+                    Console.WriteLine("\n-------Player 1's turn-------");
+                    Console.WriteLine($"Player 1 sits at position: {p1_pos}");
+                    Console.WriteLine("\n(Hit the enter key to roll)");
+
+                    p1_roll = rnd.Next(1, 7);
+
+                    Console.ReadLine();
                     Console.WriteLine($"Player 1 rolled a {p1_roll}");
 
-                    // Does the roll + pos exceed 100 -- if so overide with new position
+                    // Does the roll + pos exceed 25 -- if so overide with new position
                     p1_pos = OverCheck(p1_pos, p1_roll);
 
-                    // Does the roll + pos == 100? -- if so stop the game
+                    // Does the roll + pos == 25? -- if so stop the game
                     stopgame = WinCheck(p1_pos, p1_roll);
                     if (stopgame)
                     {
@@ -42,15 +58,17 @@ namespace SnakesAndLaddersGame
 
                     // otherwise add the roll to the position and let player 2 roll
                     p1_pos += p1_roll;
-                    Console.WriteLine($"Player 1 lands on {p1_pos}");
+                    Console.WriteLine($"\nPlayer 1 lands on {p1_pos}");
 
                     ////////////////////////////////////////////////////////////////
 
                     // Player 2 Turn
-                    p2_roll = Roll();
-                    Console.WriteLine("-------Player 2's turn-------");
+                    Console.WriteLine("\n-------Player 2's turn-------");
+                    Console.WriteLine($"Player 2 sits at position: {p2_pos}");
 
-
+                    Console.WriteLine("\n(Hit the enter key to roll)");
+                    p2_roll = rnd.Next(1, 7);
+                    Console.ReadLine();
                     Console.WriteLine($"Player 2 rolled a {p1_roll}");
 
                     // Does the roll + pos exceed 100 -- if so overide with new position
@@ -66,9 +84,9 @@ namespace SnakesAndLaddersGame
                     // Include function to check for snakes
                     // Include function to check for ladders
 
-                    // otherwise add the roll to the position and let player 2 roll
+                    // otherwise add the roll to the position and let player 1 roll
                     p2_pos += p2_roll;
-
+                    Console.WriteLine($"\nPlayer 2 lands on {p2_pos}");
                 }
 
 
@@ -125,27 +143,22 @@ namespace SnakesAndLaddersGame
 
         static void Instructions()
         {
-            Console.WriteLine("Enter instructions and rules here...");
+            Console.WriteLine("\nEnter instructions and rules here...\n");
         }
         /*Prints out game instructions*/
 
-        static int Roll()
-        {
-            Random rnd = new Random();
-            int roll = rnd.Next(1, 7);
-            return roll;
-        }
-        /* returns a dice roll (1-6) */
 
         static int OverCheck(int player_pos, int player_roll)
         {
             int sum = player_pos + player_roll;
             int new_position;
 
-            if (sum > 100)
+            if (sum > 25)
             {
-                Console.WriteLine("You have exceeded board position 100");
-                new_position = player_pos - (sum - 100);
+                Console.WriteLine($"Whoops! You landed on: {sum} ");
+                Console.WriteLine("You have exceeded board position 25");
+                new_position = player_pos - (sum - 25);
+                Console.WriteLine($"Looks like your have to bounce back {sum - 25} positions");
                 Console.WriteLine($"Your new position is: {new_position}");
                 return new_position;
             }
@@ -162,7 +175,7 @@ namespace SnakesAndLaddersGame
         static bool WinCheck(int player_pos, int player_roll)
         {
             int sum = player_pos + player_roll;
-            if (sum == 100)
+            if (sum == 25)
             {
                 Console.WriteLine("You have Won!!!");
                 return true;
